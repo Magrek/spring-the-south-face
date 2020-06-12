@@ -1,5 +1,20 @@
 <html>
 <body>
-    <div>{{some}}</div>
+    <div>
+        <form method="post">
+            <input type="text" name="title" placeholder="Enter product title"/>
+            <input type="text" name="price" placeholder="Enter product price"/>
+            <button type="submit">Create</button>
+        </form>
+    </div>
+
+    <div>All Products</div>
+    {{#products}}
+        <div>
+            <b>{{id}}</b>
+            <span>{{title}}</span>
+            <i>{{price}}</i>
+        </div>
+    {{/products}}
 </body>
 </html>
