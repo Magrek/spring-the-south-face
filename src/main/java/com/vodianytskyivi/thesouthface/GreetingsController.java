@@ -13,8 +13,12 @@ import java.util.Map;
 @Controller
 public class GreetingsController {
 
+    private final ProductRepository productRepository;
+
     @Autowired
-    private ProductRepository productRepository;
+    public GreetingsController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @GetMapping("/greeting")
     public String greeting(
@@ -32,7 +36,7 @@ public class GreetingsController {
         return "main";
     }
 
-    @PostMapping
+    @PostMapping("create")
     public String createProduct(
             @RequestParam String title, @RequestParam Double price, Map<String, Object> model
     ) {
@@ -41,5 +45,17 @@ public class GreetingsController {
         Iterable<Product> products = productRepository.findAll();
         model.put("products", products);
         return "main";
+    }
+
+    @PostMapping("filter")
+    public String filterProducts(@RequestParam String filter, Map<String, Object> model) {
+        Iterable<Product> filteredProducts;
+        if (filter != null && !filter.isEmpty()) {
+            filteredProducts = productRepository.findByTitleContaining(filter);
+        } else {
+            filteredProducts = productRepository.findAll();
+        }
+        model.put("products", filteredProducts);
+        return "main"; 
     }
 }
