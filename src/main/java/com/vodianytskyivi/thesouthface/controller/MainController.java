@@ -1,8 +1,7 @@
-package com.vodianytskyivi.thesouthface;
+package com.vodianytskyivi.thesouthface.controller;
 
 import com.vodianytskyivi.thesouthface.domain.Product;
 import com.vodianytskyivi.thesouthface.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,25 +10,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 @Controller
-public class GreetingsController {
+public class MainController {
 
     private final ProductRepository productRepository;
 
-    @Autowired
-    public GreetingsController(ProductRepository productRepository) {
+    public MainController(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/greeting")
-    public String greeting(
-            @RequestParam(name = "name", required = false, defaultValue = "World") String name,
-            Map<String, Object> model
-    ) {
-        model.put("name", name);
+    @GetMapping("/")
+    public String greeting(Map<String, Object> model) {
         return "greeting";
     }
 
-    @GetMapping
+    @GetMapping("/main")
     public String main(Map<String, Object> model) {
         Iterable<Product> products = productRepository.findAll();
         model.put("products", products);
@@ -56,6 +50,6 @@ public class GreetingsController {
             filteredProducts = productRepository.findAll();
         }
         model.put("products", filteredProducts);
-        return "main"; 
+        return "main";
     }
 }
