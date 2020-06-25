@@ -5,11 +5,10 @@ import com.vodianytskyivi.thesouthface.domain.User;
 import com.vodianytskyivi.thesouthface.repository.ProductRepository;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Map;
 
 @Controller
 public class MainController {
@@ -21,14 +20,23 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String greeting(Map<String, Object> model) {
+    public String greeting(Model model) {
         return "greeting";
     }
 
     @GetMapping("/main")
-    public String main(Map<String, Object> model) {
-        Iterable<Product> products = productRepository.findAll();
-        model.put("products", products);
+    public String main(
+            @RequestParam(required = false, defaultValue = "") String filter,
+            Model model
+    ) {
+        Iterable<Product> products;
+        if (filter != null && !filter.isEmpty()) {
+            products = productRepository.findByTitleContaining(filter);
+        } else {
+            products = productRepository.findAll();
+        }
+        model.addAttribute("products", products);
+        model.addAttribute("filter", filter);
         return "main";
     }
 
@@ -37,24 +45,12 @@ public class MainController {
             @AuthenticationPrincipal User user,
             @RequestParam String title,
             @RequestParam Double price,
-            Map<String, Object> model
+            Model model
     ) {
         Product product = new Product(title, price);
         productRepository.save(product);
         Iterable<Product> products = productRepository.findAll();
-        model.put("products", products);
-        return "main";
-    }
-
-    @PostMapping("filter")
-    public String filterProducts(@RequestParam String filter, Map<String, Object> model) {
-        Iterable<Product> filteredProducts;
-        if (filter != null && !filter.isEmpty()) {
-            filteredProducts = productRepository.findByTitleContaining(filter);
-        } else {
-            filteredProducts = productRepository.findAll();
-        }
-        model.put("products", filteredProducts);
+        model.addAttribute("products", products);
         return "main";
     }
 }
