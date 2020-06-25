@@ -10,13 +10,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Bag {
+public class ShoppingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
-
-    @OneToOne(mappedBy = "bag")
-    private User user;
 }
