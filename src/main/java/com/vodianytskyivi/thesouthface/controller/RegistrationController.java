@@ -35,12 +35,16 @@ public class RegistrationController {
     public String addUser(User user, Map<String, Object> model, HttpServletRequest request) {
         User userFromDb = userRepository.findByUsername(user.getUsername());
 
-        if (user.getUsername() == null || user.getUsername().isEmpty()) {
+        boolean isPasswordEmpty = user.getPassword() == null || user.getPassword().isEmpty();
+        boolean isUsernameEmpty = user.getUsername() == null || user.getUsername().isEmpty();
+
+        if (isPasswordEmpty && isUsernameEmpty) {
+            model.put("message", "Username and password cant' be blank.");
+            return "registration";
+        } else if (isUsernameEmpty) {
             model.put("message", "Username can't be blank");
             return "registration";
-        }
-
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+        } else if (isPasswordEmpty) {
             model.put("message", "Password can't be blank");
             return "registration";
         }
