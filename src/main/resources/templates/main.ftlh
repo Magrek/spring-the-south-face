@@ -7,9 +7,14 @@
     </div>
 
     <div>
+        <form action="/user">
+            <input type="submit" value="Users List">
+        </form>
+    </div>
+
+    <div>
         <form action="/bag">
             <input type="submit" value="Bag">
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
     </div>
 

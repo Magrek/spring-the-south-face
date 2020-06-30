@@ -7,9 +7,14 @@
     </div>
 
     <div>
+        <form action="/user">
+            <input type="submit" value="Users List">
+        </form>
+    </div>
+
+    <div>
         <form action="/bag">
             <input type="submit" value="Bag">
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
     </div>
 
@@ -33,6 +38,6 @@
             <i>${product.price}</i>
         </div>
     <#else>
-        Products list is empty
+        ${product_message}
     </#list>
 </@c.page>
