@@ -3,39 +3,41 @@
 
 <@c.page>
     <div>
-        <@l.logout />
+        <@l.logout/>
     </div>
 
     <div>
-        <form action="/user">
-            <input type="submit" value="Users List">
-        </form>
+        <span><a href="/user">User list</a></span>
     </div>
 
     <div>
-        <form action="/bag">
-            <input type="submit" value="Bag">
-        </form>
-    </div>
-
-    <div>
-        <form method="post" action="create">
-            <input type="text" name="title" placeholder="Enter product title"/>
-            <input type="text" name="price" placeholder="Enter product price"/>
+        <form method="post" action="create" enctype="multipart/form-data">
+            <div style="color: crimson">${titleFieldError?ifExists}</div>
+            <input type="text" name="title" placeholder="Enter product title" value="${enteredTitle!""}"/>
+            <div style="color: crimson">${priceFieldError?ifExists}</div>
+            <input type="text" name="price" placeholder="Enter product price" value="${enteredPrice!""}"/>
+            <input type="file" name="file">
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit">Create</button>
+            <div>
+                <button type="submit">Create</button>
+            </div>
         </form>
     </div>
 
     <div>All Products</div>
     <form method="get" action="main">
-        <input type="text" name="filter" placeholder="Filter By title" value="${filter!""}">
+        <input type="text" name="filter" placeholder="Filter By title" value="${filter?ifExists}">
         <button type="submit">Filter</button>
     </form>
     <#list products as product>
         <div>
             <span>${product.title}</span>
             <i>${product.price}</i>
+            <div>
+                <#if product.filename??>
+                    <img src="/img/${product.filename}">
+                </#if>
+            </div>
         </div>
     <#else>
         ${product_message}

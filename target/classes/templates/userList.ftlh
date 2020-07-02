@@ -10,8 +10,8 @@
             <th></th>
         </tr>
         </thead>
+        <tbody>
         <#list users as user>
-            <tbody>
             <tr>
                 <td>
                     ${user.username}
@@ -23,8 +23,7 @@
                     <a href="/user/${user.id}">Edit</a>
                 </td>
             </tr>
-            </tbody>
-
         </#list>
+        </tbody>
     </table>
 </@c.page>

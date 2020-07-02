@@ -3,6 +3,7 @@ package com.vodianytskyivi.thesouthface.controller;
 import com.vodianytskyivi.thesouthface.domain.Role;
 import com.vodianytskyivi.thesouthface.domain.User;
 import com.vodianytskyivi.thesouthface.repository.UserRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -42,7 +44,7 @@ public class UserController {
     public String userSave(
             @RequestParam String username,
             @RequestParam Map<String, String> form,
-            @RequestParam("userId") User user
+            @RequestParam("userID") User user
     ) {
         user.setUsername(username);
 
