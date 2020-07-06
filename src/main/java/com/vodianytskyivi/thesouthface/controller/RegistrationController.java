@@ -42,14 +42,13 @@ public class RegistrationController {
         boolean isPasswordEmpty = user.getPassword() == null || user.getPassword().isEmpty();
         boolean isUsernameEmpty = user.getUsername() == null || user.getUsername().isEmpty();
 
-        if (isPasswordEmpty && isUsernameEmpty) {
-            model.addAttribute("message", "Username and password cant' be blank.");
-            return "registration";
-        } else if (isUsernameEmpty) {
-            model.addAttribute("message", "Username can't be blank");
-            return "registration";
-        } else if (isPasswordEmpty) {
-            model.addAttribute("message", "Password can't be blank");
+        if (isPasswordEmpty || isUsernameEmpty) {
+            if (isUsernameEmpty) {
+                model.addAttribute("usernameError", "Username can't be blank");
+            }
+            if (isPasswordEmpty) {
+                model.addAttribute("passwordError", "Password can't be blank");
+            }
             return "registration";
         }
 

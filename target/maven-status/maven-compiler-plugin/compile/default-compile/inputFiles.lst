@@ -1,0 +1,16 @@
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/repository/UserRepository.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/config/WebSecurityConfig.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/Application.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/controller/MainController.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/controller/RegistrationController.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/service/UserService.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/controller/UserController.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/domain/Product.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/JspTagLibsFreeMarkerConfigurerBeanPostProcessor.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/config/MvcConfig.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/controller/CartController.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/domain/ShoppingCart.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/repository/ProductRepository.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/domain/Customer.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/domain/User.java
+/Users/vvodianytskyi/IdeaProjects/spring-the-south-face/src/main/java/com/vodianytskyivi/thesouthface/domain/Role.java

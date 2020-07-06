@@ -10,6 +10,8 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
+import static com.vodianytskyivi.thesouthface.domain.Role.ADMIN;
+
 @Entity
 @Getter
 @Setter
@@ -55,5 +57,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive();
+    }
+
+    public boolean isAdmin() {
+        return roles.contains(ADMIN);
     }
 }

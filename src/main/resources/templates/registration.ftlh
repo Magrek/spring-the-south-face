@@ -3,6 +3,6 @@
 
 <@c.page>
     Add new user
-    ${message!}
-    <@l.login "/registration", "Create User"/>
+    <div style="color: crimson">${message!}</div>
+    <@l.login "/registration", "Create User", true/>
 </@c.page>

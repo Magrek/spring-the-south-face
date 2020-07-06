@@ -67,7 +67,7 @@ public class MainController {
 
         if (isTitleEmpty || isPriceEmpty) {
             if (isTitleEmpty) {
-                model.addAttribute("titleFieldError", "Product Title cannot be empty");
+                model.addAttribute("titleFieldError", "Product title cannot be empty");
             }
             if (isPriceEmpty) {
                 model.addAttribute("priceFieldError", "Product price cannot be empty");

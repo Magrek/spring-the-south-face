@@ -12,9 +12,9 @@
 
     <div>
         <form method="post" action="create" enctype="multipart/form-data">
-            <div style="color: crimson">${titleFieldError?ifExists}</div>
+            <div style="color: crimson">${titleFieldError!}</div>
             <input type="text" name="title" placeholder="Enter product title" value="${enteredTitle!""}"/>
-            <div style="color: crimson">${priceFieldError?ifExists}</div>
+            <div style="color: crimson">${priceFieldError!}</div>
             <input type="text" name="price" placeholder="Enter product price" value="${enteredPrice!""}"/>
             <input type="file" name="file">
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
@@ -26,7 +26,7 @@
 
     <div>All Products</div>
     <form method="get" action="main">
-        <input type="text" name="filter" placeholder="Filter By title" value="${filter?ifExists}">
+        <input type="text" name="filter" placeholder="Filter By title" value="${filter!}">
         <button type="submit">Filter</button>
     </form>
     <#list products as product>

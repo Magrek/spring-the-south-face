@@ -1,0 +1,16 @@
+com/vodianytskyivi/thesouthface/Application.class
+com/vodianytskyivi/thesouthface/controller/UserController.class
+com/vodianytskyivi/thesouthface/controller/CartController.class
+com/vodianytskyivi/thesouthface/controller/RegistrationController.class
+com/vodianytskyivi/thesouthface/repository/ProductRepository.class
+com/vodianytskyivi/thesouthface/JspTagLibsFreeMarkerConfigurerBeanPostProcessor.class
+com/vodianytskyivi/thesouthface/domain/Product.class
+com/vodianytskyivi/thesouthface/domain/ShoppingCart.class
+com/vodianytskyivi/thesouthface/config/MvcConfig.class
+com/vodianytskyivi/thesouthface/controller/MainController.class
+com/vodianytskyivi/thesouthface/domain/Customer.class
+com/vodianytskyivi/thesouthface/service/UserService.class
+com/vodianytskyivi/thesouthface/config/WebSecurityConfig.class
+com/vodianytskyivi/thesouthface/domain/Role.class
+com/vodianytskyivi/thesouthface/domain/User.class
+com/vodianytskyivi/thesouthface/repository/UserRepository.class

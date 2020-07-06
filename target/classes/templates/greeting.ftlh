@@ -1,6 +1,8 @@
 <#import "parts/common.ftlh" as c>
+<#include "parts/security.ftlh">
+
 
 <@c.page>
-<div>Hello, Guest</div>
-<a href="/main">Main page</a>
+    <h5>Hello, ${username}</h5>
+    <div>Lets suit up!</div>
 </@c.page>
