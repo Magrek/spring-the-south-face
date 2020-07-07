@@ -18,7 +18,7 @@ isAdmin = false
         <@security.authentication property="principal.username"/>
     </#assign>
 
-    <@security.authorize access="hasRole('ADMIN')">
+    <@security.authorize access="hasAuthority('ADMIN')">
         <#assign isAdmin = true/>
     </@security.authorize>
 </#if>

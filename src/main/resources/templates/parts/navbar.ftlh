@@ -1,4 +1,5 @@
 <#include "security.ftlh">
+<#import "login.ftlh" as l>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">The South Face</a>
@@ -22,9 +23,10 @@
         </ul>
 
         <#if isLoggedIn>
-            <div class="navbar-text">
+            <div class="navbar-text text-capitalize mr-2">
                 ${username}
             </div>
+            <@l.logout/>
         <#else>
             <div class="nav-item">
                 <a class="nav-link" href="/login">Sign In</a>
