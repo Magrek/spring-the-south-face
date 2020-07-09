@@ -1,8 +1,7 @@
 package com.vodianytskyivi.thesouthface.controller;
 
-import com.vodianytskyivi.thesouthface.domain.Role;
 import com.vodianytskyivi.thesouthface.domain.User;
-import com.vodianytskyivi.thesouthface.repository.UserRepository;
+import com.vodianytskyivi.thesouthface.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,18 +10,20 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
+
+import static org.springframework.util.StringUtils.isEmpty;
 
 @Controller
 public class RegistrationController {
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
-    public RegistrationController(UserRepository userRepository, AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
+    public RegistrationController(UserService userService, AuthenticationManager authenticationManager) {
+        this.userService = userService;
         this.authenticationManager = authenticationManager;
     }
 
@@ -37,10 +38,8 @@ public class RegistrationController {
             Model model,
             HttpServletRequest request
     ) {
-        User userFromDb = userRepository.findByUsername(user.getUsername());
-
-        boolean isPasswordEmpty = user.getPassword() == null || user.getPassword().isEmpty();
-        boolean isUsernameEmpty = user.getUsername() == null || user.getUsername().isEmpty();
+        boolean isPasswordEmpty = isEmpty(user.getPassword());
+        boolean isUsernameEmpty = isEmpty(user.getUsername());
 
         if (isPasswordEmpty || isUsernameEmpty) {
             if (isUsernameEmpty) {
@@ -52,16 +51,15 @@ public class RegistrationController {
             return "registration";
         }
 
-        if (userFromDb != null) {
+        if (!userService.addUser(user)) {
             model.addAttribute("message", "User exists!");
             return "registration";
         }
 
-        user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
-        userRepository.save(user);
+
         authenticateUserAndSetSession(user, request);
-        return "redirect:/main";
+        model.addAttribute("message", "Please, activate your account.");
+        return "redirect:/";
     }
 
     private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
@@ -73,5 +71,18 @@ public class RegistrationController {
         Authentication authenticatedUser = authenticationManager.authenticate(token);
 
         SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activate(Model model, @PathVariable String code) {
+        boolean isActivated = userService.activateUser(code);
+
+        if (isActivated) {
+            model.addAttribute("message", "User successfully activated!");
+        } else {
+            model.addAttribute("message", "Activation code is not found!");
+        }
+
+        return "";
     }
 }

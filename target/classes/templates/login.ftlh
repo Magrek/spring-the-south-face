@@ -3,5 +3,6 @@
 
 <@c.page>
     Login Page
+    <div style="color: crimson">${message!}</div>
     <@l.login "/login", "Sign In", false/>
 </@c.page>

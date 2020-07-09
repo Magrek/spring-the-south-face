@@ -18,6 +18,17 @@
                 ${passwordError!}
             </div>
         </div>
+        <#if isRegisterForm>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Email: </label>
+            <div class="col-sm-6">
+                <input type="email" name="email" class="form-control" placeholder="some@some.com"/>
+            </div>
+            <div style="color: crimson">
+                ${emailError!}
+            </div>
+        </div>
+        </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <button type="submit" class="btn btn-dark">${button}</button>
         <#if !isRegisterForm>
