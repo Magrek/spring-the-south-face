@@ -19,9 +19,9 @@
             </div>
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <button type="submit" class="btn btn-primary">${button}</button>
+        <button type="submit" class="btn btn-dark">${button}</button>
         <#if !isRegisterForm>
-            <a href="/registration" class="btn btn-primary">Create User</a>
+            <a href="/registration" class="btn btn-dark">Create User</a>
         </#if>
     </form>
 </#macro>
@@ -29,7 +29,7 @@
     <div>
         <form action="/logout" method="post">
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit" class="btn btn-primary">Sign Out</button>
+            <button type="submit" class="btn btn-dark">Sign Out</button>
         </form>
     </div>
 </#macro>

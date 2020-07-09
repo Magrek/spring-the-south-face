@@ -42,7 +42,7 @@ public class MainController {
     ) {
         Iterable<Product> products;
         if (filter != null && !filter.isEmpty()) {
-            products = productRepository.findByTitleContaining(filter);
+            products = productRepository.findByTitleContainingIgnoreCase(filter);
         } else {
             products = productRepository.findAll();
         }

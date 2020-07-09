@@ -1,13 +1,15 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    List of users
-    <table>
-        <thead>
+    <div class="mb-3">
+        <h2>List of users</h2>
+    </div>
+    <table class="table">
+        <thead class="thead-dark">
         <tr>
-            <th>Name</th>
-            <th>Roles</th>
-            <th></th>
+            <th scope="col">Name</th>
+            <th scope="col">Roles</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -17,10 +19,17 @@
                     ${user.username}
                 </td>
                 <td>
-                    <#list user.roles as role>${role}<#sep>, </#list>
+                    <#list user.roles?sort?reverse as role>
+                        <#assign isAdmin = role == "ADMIN">
+
+                        <#if role == "ADMIN">
+                            <#assign style="dark"/>
+                        </#if>
+                            <span class="badge badge-${isAdmin?string("dark", "success")}">${role}<#sep> </span>
+                    </#list>
                 </td>
                 <td>
-                    <a href="/user/${user.id}">Edit</a>
+                    <a href="/user/${user.id}" class="btn btn-warning btn-sm">Edit</a>
                 </td>
             </tr>
         </#list>
