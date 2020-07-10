@@ -58,8 +58,8 @@ public class RegistrationController {
 
 
         authenticateUserAndSetSession(user, request);
-        model.addAttribute("message", "Please, activate your account.");
-        return "redirect:/";
+        model.addAttribute("warningMessage", "Please, activate your account.");
+        return "greeting";
     }
 
     private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
@@ -78,11 +78,11 @@ public class RegistrationController {
         boolean isActivated = userService.activateUser(code);
 
         if (isActivated) {
-            model.addAttribute("message", "User successfully activated!");
+            model.addAttribute("successMessage", "User successfully activated!");
         } else {
-            model.addAttribute("message", "Activation code is not found!");
+            model.addAttribute("dangerMessage", "Activation code is not found!");
         }
 
-        return "";
+        return "greeting";
     }
 }
