@@ -38,8 +38,8 @@ public class MainController {
             Model model
     ) {
         model.addAttribute("warningMessage", warningMessage);
-        model.addAttribute("successMessage", warningMessage);
-        model.addAttribute("dangerMessage", warningMessage);
+        model.addAttribute("successMessage", successMessage);
+        model.addAttribute("dangerMessage", dangerMessage);
         return "greeting";
     }
 

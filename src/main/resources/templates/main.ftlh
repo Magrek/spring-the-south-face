@@ -84,8 +84,6 @@
                     </a>
                 </div>
             </div>
-        <#else>
-            ${product_message}
         </#list>
     </div>
 </@c.page>

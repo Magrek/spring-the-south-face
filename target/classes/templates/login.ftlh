@@ -3,6 +3,8 @@
 
 <@c.page>
     Login Page
-    <div style="color: crimson">${message?has_content}</div>
+    <#if message?hasContent>
+        <div style="color: crimson">${message}</div>
+    </#if>
     <@l.login "/login", "Sign In", false/>
 </@c.page>

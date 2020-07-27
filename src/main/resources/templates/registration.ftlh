@@ -3,6 +3,8 @@
 
 <@c.page>
     <div class="mb-1">Add new user</div>
-    <div style="color: crimson">${message?has_content}</div>
+    <#if message?hasContent>
+        <div style="color: crimson">${message}</div>
+    </#if>
     <@l.login "/registration", "Create User", true/>
 </@c.page>

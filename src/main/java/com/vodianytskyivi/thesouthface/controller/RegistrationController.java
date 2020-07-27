@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,18 +25,26 @@ import static org.springframework.util.StringUtils.isEmpty;
 public class RegistrationController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
-    public RegistrationController(UserService userService, AuthenticationManager authenticationManager) {
+    public RegistrationController(UserService userService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/registration")
     public String registration(
+            Model model,
             @RequestParam(defaultValue = "") String usernameError,
             @RequestParam(defaultValue = "") String passwordError,
+            @RequestParam(defaultValue = "") String emailError,
             @RequestParam(defaultValue = "") String message
             ) {
+        model.addAttribute("usernameError", usernameError);
+        model.addAttribute("passwordError", passwordError);
+        model.addAttribute("emailError", emailError);
+        model.addAttribute("message", message);
         return "registration";
     }
 
@@ -48,13 +57,17 @@ public class RegistrationController {
     ) {
         boolean isPasswordEmpty = isEmpty(user.getPassword());
         boolean isUsernameEmpty = isEmpty(user.getUsername());
+        boolean isEmailAddressEmpty = isEmpty(user.getEmail());
 
-        if (isPasswordEmpty || isUsernameEmpty) {
+        if (isPasswordEmpty || isUsernameEmpty || isEmailAddressEmpty) {
             if (isUsernameEmpty) {
                 redirectAttributes.addAttribute("usernameError", "Username can't be blank");
             }
             if (isPasswordEmpty) {
                 redirectAttributes.addAttribute("passwordError", "Password can't be blank");
+            }
+            if (isEmailAddressEmpty) {
+                redirectAttributes.addAttribute("emailError", "Email can't be blank");
             }
             return new RedirectView("/registration", true);
         }
@@ -70,7 +83,8 @@ public class RegistrationController {
     }
 
     private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        UsernamePasswordAuthenticationToken token =
+                new UsernamePasswordAuthenticationToken(user.getUsername(), passwordEncoder.encode(user.getPassword()));
 
         request.getSession();
 
