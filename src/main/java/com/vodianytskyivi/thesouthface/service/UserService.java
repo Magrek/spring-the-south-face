@@ -8,9 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -45,6 +46,12 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(user);
 
+        sendActivationCode(user);
+
+        return true;
+    }
+
+    private void sendActivationCode(User user) {
         if (!isEmpty(user.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
@@ -53,8 +60,6 @@ public class UserService implements UserDetailsService {
             );
             mailSender.send(user.getEmail(), "Activation code", message);
         }
-
-        return true;
     }
 
     public boolean activateUser(String code) {
@@ -69,5 +74,54 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
 
         return true;
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public void saveUser(User user, String username, Map<String, String> form) {
+        user.setUsername(username);
+
+        Set<String> roles = Arrays.stream(Role.values())
+                .map(Role::name)
+                .collect(Collectors.toSet());
+
+        user.getRoles().clear();
+
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
+                user.getRoles().add(Role.valueOf(key));
+            }
+        }
+
+        userRepository.save(user);
+    }
+
+    public boolean isEmailDifferent(User user, String email) {
+        String userEmail = user.getEmail();
+        return (email != null && !email.equals(userEmail)) ||
+                (userEmail != null && !userEmail.equals(email));
+    }
+
+    public void updateUser(User user, String email, String password) {
+        boolean isEmailChanged = isEmailDifferent(user, email);
+        if (isEmailChanged) {
+            user.setEmail(email);
+
+            if (!StringUtils.isEmpty(email)) {
+                user.setActivationCode(UUID.randomUUID().toString());
+            }
+        }
+
+        if (!StringUtils.isEmpty(password)) {
+            user.setPassword(password);
+        }
+
+        userRepository.save(user);
+
+        if (isEmailChanged) {
+            sendActivationCode(user);
+        }
     }
 }

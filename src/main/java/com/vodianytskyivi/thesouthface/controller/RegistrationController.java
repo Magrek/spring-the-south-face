@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,38 +31,42 @@ public class RegistrationController {
     }
 
     @GetMapping("/registration")
-    public String registration() {
+    public String registration(
+            @RequestParam(defaultValue = "") String usernameError,
+            @RequestParam(defaultValue = "") String passwordError,
+            @RequestParam(defaultValue = "") String message
+            ) {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(
+    public RedirectView addUser(
             User user,
             Model model,
-            HttpServletRequest request
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes
     ) {
         boolean isPasswordEmpty = isEmpty(user.getPassword());
         boolean isUsernameEmpty = isEmpty(user.getUsername());
 
         if (isPasswordEmpty || isUsernameEmpty) {
             if (isUsernameEmpty) {
-                model.addAttribute("usernameError", "Username can't be blank");
+                redirectAttributes.addAttribute("usernameError", "Username can't be blank");
             }
             if (isPasswordEmpty) {
-                model.addAttribute("passwordError", "Password can't be blank");
+                redirectAttributes.addAttribute("passwordError", "Password can't be blank");
             }
-            return "registration";
+            return new RedirectView("/registration", true);
         }
 
         if (!userService.addUser(user)) {
-            model.addAttribute("message", "User exists!");
-            return "registration";
+            redirectAttributes.addAttribute("message", "User exists!");
+            return new RedirectView("/registration", true);
         }
 
-
         authenticateUserAndSetSession(user, request);
-        model.addAttribute("warningMessage", "Please, activate your account.");
-        return "greeting";
+        redirectAttributes.addAttribute("warningMessage", "Please, activate your account.");
+        return new RedirectView("/", true);
     }
 
     private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
@@ -74,15 +81,18 @@ public class RegistrationController {
     }
 
     @GetMapping("/activate/{code}")
-    public String activate(Model model, @PathVariable String code) {
+    public RedirectView activate(
+            Model model,
+            @PathVariable String code,
+            RedirectAttributes redirectAttributes
+    ) {
         boolean isActivated = userService.activateUser(code);
 
         if (isActivated) {
-            model.addAttribute("successMessage", "User successfully activated!");
+            redirectAttributes.addAttribute("successMessage", "User successfully activated!");
         } else {
-            model.addAttribute("dangerMessage", "Activation code is not found!");
+            redirectAttributes.addAttribute("dangerMessage", "Activation code is not found!");
         }
-
-        return "greeting";
+        return new RedirectView("/", true);
     }
 }

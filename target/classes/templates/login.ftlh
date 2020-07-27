@@ -3,6 +3,6 @@
 
 <@c.page>
     Login Page
-    <div style="color: crimson">${message!}</div>
+    <div style="color: crimson">${message?has_content}</div>
     <@l.login "/login", "Sign In", false/>
 </@c.page>

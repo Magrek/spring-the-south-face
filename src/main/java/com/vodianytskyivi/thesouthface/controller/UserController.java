@@ -2,32 +2,35 @@ package com.vodianytskyivi.thesouthface.controller;
 
 import com.vodianytskyivi.thesouthface.domain.Role;
 import com.vodianytskyivi.thesouthface.domain.User;
-import com.vodianytskyivi.thesouthface.repository.UserRepository;
+import com.vodianytskyivi.thesouthface.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.findAll());
         return "userList";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("{user}")
     public String userEditForm(
             @PathVariable User user,
@@ -38,27 +41,42 @@ public class UserController {
         return "userEdit";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public String userSave(
             @RequestParam String username,
             @RequestParam Map<String, String> form,
             @RequestParam("userID") User user
     ) {
-        user.setUsername(username);
-
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-
-        user.getRoles().clear();
-
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
-            }
-        }
-
-        userRepository.save(user);
+        userService.saveUser(user, username, form);
         return "redirect:/user";
+    }
+
+    @GetMapping("profile")
+    public String getProfile(
+            Model model,
+            @AuthenticationPrincipal User user,
+            @RequestParam(defaultValue = "") String warningMessage
+    ) {
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("warningMessage", warningMessage);
+        return "profile";
+    }
+
+    @PostMapping("profile")
+    public RedirectView updateProfile(
+            @AuthenticationPrincipal User user,
+            @RequestParam String password,
+            @RequestParam String email,
+            RedirectAttributes redirectAttributes
+    ) {
+        boolean isEmailChanged = userService.isEmailDifferent(user, email);
+        userService.updateUser(user, email, password);
+        RedirectView redirectView = new RedirectView("/user/profile", true);
+        if (isEmailChanged) {
+            redirectAttributes.addAttribute("warningMessage", "Please, activate your account.");
+        }
+        return redirectView;
     }
 }

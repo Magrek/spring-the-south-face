@@ -6,7 +6,7 @@
                 <input type="text" name="username" class="form-control" placeholder="User Name"/>
             </div>
             <div style="color: crimson">
-                ${usernameError!}
+                ${usernameError?has_content}
             </div>
         </div>
         <div class="form-group row">
@@ -15,7 +15,7 @@
                 <input type="password" name="password" class="form-control" placeholder="Password"/>
             </div>
             <div style="color: crimson">
-                ${passwordError!}
+                ${passwordError?has_content}
             </div>
         </div>
         <#if isRegisterForm>
@@ -25,7 +25,7 @@
                 <input type="email" name="email" class="form-control" placeholder="some@some.com"/>
             </div>
             <div style="color: crimson">
-                ${emailError!}
+                ${emailError?has_content}
             </div>
         </div>
         </#if>

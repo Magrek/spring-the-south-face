@@ -31,7 +31,15 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String greeting() {
+    public String greeting(
+            @RequestParam(defaultValue = "") String warningMessage,
+            @RequestParam(defaultValue = "") String successMessage,
+            @RequestParam(defaultValue = "") String dangerMessage,
+            Model model
+    ) {
+        model.addAttribute("warningMessage", warningMessage);
+        model.addAttribute("successMessage", warningMessage);
+        model.addAttribute("dangerMessage", warningMessage);
         return "greeting";
     }
 
